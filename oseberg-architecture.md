@@ -1,0 +1,288 @@
+# Architecture by Dataset
+
+## Instrument
+
+```mermaid
+flowchart LR
+  classDef stateful fill:green,fill-opacity:0.3;
+  classDef external fill:yellow,fill-opacity:0.3;
+
+  AN([Annotation Service]):::stateful
+  AR([Arda]):::stateful
+  BIZ([bizhub]):::stateful
+  C[CopyCat]
+  D([Datastream]):::stateful
+  EL[(Elasticsearch)]:::external
+  EH([Eharmony]):::stateful
+  G[GoatHerder]
+  H[Hooked on Phonics]
+  I([Imagestore]):::stateful
+  L[Lochness]
+  N[Neuralyzer]
+  S3[(S3)]:::external
+  SA([Sauron]):::stateful
+  ST[Steamroller]
+  T[Transporter]
+  VEG[Vegomatic]
+  VEN[Vendors]:::external
+  XR([Xref]):::stateful
+  X([Xform]):::stateful
+
+  click AN "https://bitbucket.org/oseberg-repo/annotation-service"
+  click AR "https://bitbucket.org/oseberg-repo/arda"
+  click C "https://bitbucket.org/oseberg-repo/copy-cat"
+  click D "https://bitbucket.org/oseberg-repo/datastream"
+  click EH "https://bitbucket.org/oseberg-repo/eharmony"
+  click FL "https://bitbucket.org/oseberg-repo/flyfisher"
+  click G "https://bitbucket.org/oseberg-repo/goat-herder"
+  click H "https://bitbucket.org/oseberg-repo/hooked-on-phonics"
+  click I "https://bitbucket.org/oseberg-repo/image-store"
+  click L "https://bitbucket.org/oseberg-repo/lochness"
+  click N "https://bitbucket.org/oseberg-repo/neuralyzer"
+  click SA "https://bitbucket.org/oseberg-repo/sauron"
+  click ST "https://bitbucket.org/oseberg-repo/steamroller"
+  click T "https://bitbucket.org/oseberg-repo/transporter"
+  click VEG "https://bitbucket.org/oseberg-repo/vegomatic"
+  click X "https://bitbucket.org/oseberg-repo/xform"
+  click XR "https://bitbucket.org/oseberg-repo/xref"
+
+  AN -->|annotations| X
+  AN -->|annotations| EL
+  AR -->|geojson| X
+  BIZ -->|*merged/split images| X
+  EH -->|image matches| X
+  EH -->|images| BIZ
+  H -->|*ocr| X
+  I -->|csvs/json/ndjson files| VEG
+  I -->|images| EH
+  I -->|images| L
+  I -->|images| N
+  L -->|images| BIZ
+  S3 -->|*files| I
+  SA -->|ocr| AN
+  ST -->|flat records| EL
+  VEG -->|json| X
+  VEN -->|csvs| S3
+  VEN -->|images| S3
+  XR -->|xrefs| X
+  X --> AN
+  X --> AR
+  X --> EH
+  X --> EL
+  X --> H
+  X --> ST
+  X --> XR
+  X -->|*| D
+  X -->|*| SA
+```
+
+## AppOrder/Pooling/Spacing/Respondent
+
+```mermaid
+flowchart LR
+  classDef stateful fill:green,fill-opacity:0.3;
+  classDef external fill:yellow,fill-opacity:0.3;
+
+  AN([Annotation Service]):::stateful
+  AR([Arda]):::stateful
+  BIZ([bizhub]):::stateful
+  C[CopyCat]
+  D([Datastream]):::stateful
+  EL[(Elasticsearch)]:::external
+  FL[Flyfisher]
+  G[GoatHerder]
+  I([Imagestore]):::stateful
+  S3[(S3)]:::external
+  SA([Sauron]):::stateful
+  ST[Steamroller]
+  T[Transporter]
+  VEG[Vegomatic]
+  VEN[Vendors]:::external
+  XR([Xref]):::stateful
+  X([Xform]):::stateful
+
+
+  click AN "https://bitbucket.org/oseberg-repo/annotation-service"
+  click AR "https://bitbucket.org/oseberg-repo/arda"
+  click C "https://bitbucket.org/oseberg-repo/copy-cat"
+  click D "https://bitbucket.org/oseberg-repo/datastream"
+  click EH "https://bitbucket.org/oseberg-repo/eharmony"
+  click FL "https://bitbucket.org/oseberg-repo/flyfisher"
+  click G "https://bitbucket.org/oseberg-repo/goat-herder"
+  click H "https://bitbucket.org/oseberg-repo/hooked-on-phonics"
+  click I "https://bitbucket.org/oseberg-repo/image-store"
+  click L "https://bitbucket.org/oseberg-repo/lochness"
+  click N "https://bitbucket.org/oseberg-repo/neuralyzer"
+  click SA "https://bitbucket.org/oseberg-repo/sauron"
+  click ST "https://bitbucket.org/oseberg-repo/steamroller"
+  click T "https://bitbucket.org/oseberg-repo/transporter"
+  click VEG "https://bitbucket.org/oseberg-repo/vegomatic"
+  click X "https://bitbucket.org/oseberg-repo/xform"
+  click XR "https://bitbucket.org/oseberg-repo/xref"
+
+  AN -->|annotations| X
+  AN -->|annotations| EL
+  AR -->|geojson| X
+  BIZ -->|*merged/split images| X
+  I -->|ndjson files| VEG
+  FL -->|*images| X
+  S3 -->|*files| I
+  SA -->|ocr| AN
+  ST -->|flat records| EL
+  VEG -->|json| X
+  VEN -->|ndjson files| S3
+  XR -->|xrefs| X
+  X --> AN
+  X --> AR
+  X --> BIZ
+  X --> EL
+  X --> FL
+  X --> ST
+  X --> XR
+  X -->|*| D
+```
+
+## Legacy
+
+```mermaid
+flowchart LR
+  classDef stateful fill:green,fill-opacity:0.3;
+  classDef external fill:yellow,fill-opacity:0.3;
+
+
+  D([Datastream]):::stateful
+  DL[Dataloader]
+  FTP[(FTP)]:::external
+  HARV[Harvest]
+  HDB[(Harvest DB)]:::stateful
+  OW[OWebServices]:::stateful
+  PDB[(Product DB)]:::stateful
+  VEN[Vendors]:::external
+  IC[Image Conversion]
+
+  AN([Annotation Service]):::stateful
+  %%EL[(Elasticsearch)]:::external
+  FS[(FileSystem)]:::stateful
+  %%G[GoatHerder]
+  %%I([Imagestore]):::stateful
+  %%S3[(S3)]:::external
+  %%SA([Sauron]):::stateful
+  XR([Xref]):::stateful
+
+  click AN "https://bitbucket.org/oseberg-repo/annotation-service"
+  click D "https://bitbucket.org/oseberg-repo/datastream"
+  click DL "https://bitbucket.org/oseberg-repo/data-load"
+  click G "https://bitbucket.org/oseberg-repo/goat-herder"
+  click HARV "https://bitbucket.org/oseberg-repo/harvest"
+  click HDB "https://bitbucket.org/oseberg-repo/harvest-db"
+  click I "https://bitbucket.org/oseberg-repo/image-store"
+  click IC "https://bitbucket.org/oseberg-repo/image-conversion"
+  click OW "https://bitbucket.org/oseberg-repo/owebservices-ng"
+  click PDB "https://bitbucket.org/oseberg-repo/product-db"
+  click XR "https://bitbucket.org/oseberg-repo/xref"
+
+  AN --> HDB
+  DL -->|images| FS
+  DL -->|records| HDB
+  FS --> AN
+  FTP -->|records+images| DL
+  HARV -->|scraped images| FS
+  HARV -->|scraped records| HDB
+  HDB --> PDB
+  IC --- FS
+  IC --- OW
+  PDB --- OW
+  PDB --> D
+  VEN --> FTP
+
+```
+
+# DB Queries
+
+## DB sizes
+
+```sql
+  SELECT pg_size_pretty( pg_database_size(current_database()) );
+```
+
+| Database      | Size (GB) |
+| ------------- | --------- |
+| xform         | 1437      |
+| annotate      | 1317      |
+| datastream    | 558       |
+| product       | 354       |
+| harvest       | 270       |
+| image_store   | 196       |
+| xref          | 95        |
+| bizhub        | 55        |
+| record_loader | 54        |
+
+## Xform Events
+
+```sql
+select dataset_name, aggregate_type, count(*) from xform.event group by 1,2 order by 1,2;
+```
+
+| dataset_name    | aggregate_type                       | count    |
+| --------------- | ------------------------------------ | -------- |
+| app-order       | administrative-order                 | 41026917 |
+| app-order       | annotation-upsert                    | 1290884  |
+| app-order       | case-file                            | 4637227  |
+| app-order       | hearing-order                        | 3334925  |
+| app-order       | s3-object                            | 760433   |
+| app-order       | wy-hearing                           | 12777    |
+| app-order       | wy-order                             | 78942    |
+| communitization | arda-auto-map                        | 19049    |
+| communitization | blm-lr2000                           | 1088339  |
+| communitization | entity-name-mapping                  | 41736    |
+| communitization | slo                                  | 576461   |
+| index-record    | image-match                          | 10594612 |
+| index-record    | raw-index-record                     | 31212610 |
+| instrument      | annotation-upsert                    | 1840442  |
+| instrument      | arda-auto-map                        | 3184634  |
+| instrument      | bis-out-of-scope                     | 149303   |
+| instrument      | bis-tx-lease-json                    | 702755   |
+| instrument      | blm-lr2000                           | 5862647  |
+| instrument      | entity-name-mapping                  | 13583632 |
+| instrument      | index-record                         | 50824130 |
+| instrument      | nm-state-lands-delete                | 3050     |
+| instrument      | nm-state-lands-geojson               | 10538    |
+| instrument      | purple-auto-map                      | 1448813  |
+| instrument      | s3-object                            | 8720411  |
+| instrument      | slo-tracts                           | 7187     |
+| permit          | arda-auto-map                        | 161283   |
+| permit          | entity-name-mapping                  | 153272   |
+| permit          | nm-ocd-permit-details                | 160548   |
+| permit          | nm-ocd-permit-header                 | 20950    |
+| permit          | us-blm-permit-approved-apd-federal   | 654710   |
+| permit          | us-blm-permit-thirty-day-apd-federal | 65520    |
+| permit          | us-blm-permit-thirty-day-nos-federal | 10462    |
+| permit          | xref-permit-to-well                  | 4850164  |
+| pooling         | app-order                            | 826911   |
+| pooling         | arda-auto-map                        | 8125     |
+| pooling         | entity-name-mapping                  | 20248    |
+| pooling         | s3-object                            | 83358    |
+| respondent      | app-order                            | 877185   |
+| respondent      | entity-name-mapping                  | 338008   |
+| spacing         | app-order                            | 375180   |
+| spacing         | arda-auto-map                        | 3515     |
+| spacing         | entity-name-mapping                  | 12829    |
+| spacing         | s3-object                            | 25816    |
+| unit            | anthem                               | 150147   |
+| unit            | arda-auto-map                        | 54758    |
+| unit            | entity-name-mapping                  | 265630   |
+| unit            | spacing-unit                         | 1552005  |
+| unitization     | arda-auto-map                        | 2592     |
+| unitization     | blm-lr2000                           | 199142   |
+| unitization     | entity-name-mapping                  | 6414     |
+| well            | arda-auto-map                        | 238372   |
+| well            | blr-production                       | 671218   |
+| well            | entity-name-mapping                  | 118477   |
+| well            | nm-ocd-well                          | 413572   |
+| well            | nm-well-detail                       | 2570569  |
+| well            | ose-frac                             | 1257136  |
+| well            | s3-object                            | 2694992  |
+| well            | well-file                            | 17313974 |
+| well-file       | nm-well-file                         | 17489139 |
+| well-file       | ocr-result                           | 2763344  |
+| well-file       | s3-object                            | 2589508  |
